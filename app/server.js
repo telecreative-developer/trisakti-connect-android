@@ -4,4 +4,4 @@
   @flow
 */
 
-export const url = 'http://159.89.199.126'
+export const url = 'http://45.63.26.24'

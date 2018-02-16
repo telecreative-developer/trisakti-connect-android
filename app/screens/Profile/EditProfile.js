@@ -190,7 +190,7 @@ class EditProfile extends Component {
 							<Picker
 								mode="dropdown"
 								selectedValue={this.state.id_major}
-								onValueChange={() => this.onValueChangeMajor()}>
+								onValueChange={(value) => this.onValueChangeMajor(value)}>
 								{this.props.dataMajors.map((major, index) => (
 									<Item key={index} label={major.major} value={major.id_major} />
 								))}
@@ -201,7 +201,7 @@ class EditProfile extends Component {
 							<Picker
 								mode="dropdown"
 								selectedValue={this.state.id_faculty}
-								onValueChange={() => this.onValueChangeFaculty()}>
+								onValueChange={(value) => this.onValueChangeFaculty(value)}>
 								{this.props.dataFaculties.map((faculty, index) => (
 									<Item key={index} label={faculty.faculty} value={faculty.id_faculty} />
 								))}
