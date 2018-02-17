@@ -15,7 +15,7 @@ import {
 } from '../constants'
 import { app } from '../socket'
 import { url } from '../server'
-import { setLoading, setFailed } from '../actions/processor'
+import { setLoading, setFailed, setDataUser } from '../actions/processor'
 
 export const saveSession = (email, accessToken) => {
 	return () => {
@@ -168,7 +168,7 @@ export const editProfileWithAvatar = (id, avatar, item, accessToken) => {
 				twitter: item.twitter,
 				linkedin: item.linkedin
 			}
-			await fetch(`${url}/users/${id}`, {
+			const response = await fetch(`${url}/users/${id}`, {
 				method: 'PATCH',
 				headers: {
 					'Accept': 'application/json',
@@ -177,6 +177,8 @@ export const editProfileWithAvatar = (id, avatar, item, accessToken) => {
 				},
 				body: JSON.stringify(dataItems)
 			})
+			const dataRes = await response.json()
+			await dispatch(setDataUser(dataRes))
 			await dispatch(editProfileSuccess(true))
 			await dispatch(setLoading({condition: false, process_on: 'edit_profile'}))
 		}catch(e){
@@ -190,7 +192,7 @@ export const editProfileWithoutAvatar = (id, item, accessToken) => {
 	return async (dispatch) => {
 		await dispatch(setLoading({condition: true, process_on: 'edit_profile'}))		
 		try {
-			await fetch(`${url}/users/${id}`, {
+			const response = await fetch(`${url}/users/${id}`, {
 				method: 'PATCH',
 				headers: {
 					'Accept': 'application/json',
@@ -198,10 +200,13 @@ export const editProfileWithoutAvatar = (id, item, accessToken) => {
 					'Authorization': accessToken
 				},
 				body: JSON.stringify(item)
-			})	
+			})
+			const dataRes = await response.json()
+			await dispatch(setDataUser(dataRes))
 			await dispatch(editProfileSuccess(true))
 			await dispatch(setLoading({condition: false, process_on: 'edit_profile'}))
 		}catch(e){
+			console.log(e)
 			dispatch(setFailed({condition: true, message: 'Edit Profile Failed', detailMessage: e}))
 			dispatch(setLoading({condition: false, process_on: 'edit_profile'}))
 		}

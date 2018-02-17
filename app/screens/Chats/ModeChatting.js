@@ -169,13 +169,11 @@ class ModeChatting extends Component<{}> {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		fetchChatsByIDLoading: state.fetchChatsByIDLoading,
-		fetchChatsByIDSuccess: state.fetchChatsByIDSuccess,
-		session: state.session
-	}
-}
+const mapStateToProps = (state) => ({
+	fetchChatsByIDLoading: state.fetchChatsByIDLoading,
+	fetchChatsByIDSuccess: state.fetchChatsByIDSuccess,
+	session: state.session
+})
 
 const mapDispatchToProps = (dispatch) => {
 	return {
