@@ -76,21 +76,24 @@ class Login extends Component<{}> {
 						}
 					})
 					const dataUser = await response2.json()
-					await this.props.setSession({id: dataUser.data[0].id, accessToken: dataAuth.accessToken})
-					await this.props.saveSession(dataUser.data[0].email, dataAuth.accessToken)
-					await this.props.savePassword(password)
-					await this.props.setLinkNavigate({navigate: '', data: ''})
-					await this.props.setDataUser(dataUser.data[0])
-					await this.props.navigation.navigate('Home')
-					await this.setState({loginLoading: false})
+					if(dataUser.data[0].verified) {
+						await this.props.setSession({id: dataUser.data[0].id, accessToken: dataAuth.accessToken})
+						await this.props.saveSession(dataUser.data[0].email, dataAuth.accessToken)
+						await this.props.savePassword(password)
+						await this.props.setLinkNavigate({navigate: '', data: ''})
+						await this.props.setDataUser(dataUser.data[0])
+						await this.props.navigation.navigate('Home')
+						await this.setState({loginLoading: false})
+					}else{
+						this.setState({loginFailed: true, loginLoading: false})
+						Alert.alert('', 'Your account in progress approve by adminYour account has not been verified, please wait for admin verification')
+					}
 				}else{
-					this.setState({loginFailed: true})
-					this.setState({loginLoading: false})
+					this.setState({loginFailed: true, loginLoading: false})
 					Alert.alert('Login gagal', 'Email atau password salah')
 				}
 			}catch(e) {
-				this.setState({loginFailed: true})
-				this.setState({loginLoading: false})
+				this.setState({loginFailed: true, loginLoading: false})
 				Alert.alert('Login gagal', 'Ada sesuatu yang salah')
 			}
 		}

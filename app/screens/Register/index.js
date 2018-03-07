@@ -3,7 +3,7 @@ import { StyleSheet, View, Alert, Image, BackHandler, Dimensions, TouchableHighl
 import { connect } from 'react-redux'
 import { isEmpty, isEmail } from 'validator'
 import Mailer from 'react-native-mail'
-import { fetchFaculties, fetchMajors, fetchUserWithNim, userWithNim, register, sendReport } from '../../actions/users'
+import { fetchFaculties, fetchMajors, fetchUserWithNim, userWithNim, register, sendReport, registerManual } from '../../actions/users'
 import { Container, Header, Input, Footer, Picker, Spinner, Item, H2, Form, Title, Text, Label, Body, Icon, Left, Right, Button, Content } from 'native-base'
 import ThemeContainer from '../ThemeContainer'
 import moment from 'moment'
@@ -41,7 +41,9 @@ class Register extends Component {
 			subject: 'I have a problem with my id (NIM)',
 			subjectStatus: false,
 			contentreport: '',
-			isDateTimePickerVisible: false
+			isDateTimePickerVisible: false,
+			disabledNim: true,
+			disabledName: true
 		}
     
 		this.onValueChangeFaculty = this.onValueChangeFaculty.bind(this)
@@ -140,7 +142,7 @@ class Register extends Component {
 					await this.setState({registerPage: 'register1'})
 				}else{
 					await this.props.setLoading({condition: false, process_on: 'fetch_user_with_nim'})
-					await Alert.alert('Register Failed X', `User with NIM: ${this.state.nim} not found or has been registered.`)
+					await Alert.alert('Register Failed', `User with NIM: ${this.state.nim} not found or has been registered.`)
 				}
 			}catch(e){
 				await this.props.setLoading({condition: false, process_on: 'fetch_user_with_nim'})
@@ -150,8 +152,10 @@ class Register extends Component {
 	}
 
 	handleValidationRegister2() {
-		const { name, email, phone, address, kecamatan, kelurahan, provinsi, postcode, birth, birth_place } = this.state
-		if(isEmpty(name)){
+		const { nim, name, email, phone, address, kecamatan, kelurahan, provinsi, postcode, birth, birth_place } = this.state
+		if(isEmpty(nim)){
+			Alert.alert('', 'Masukan nim')
+		}else if(isEmpty(name)){
 			Alert.alert('', 'Masukan nama lengkap')
 		}else if(isEmpty(email)){
 			Alert.alert('', 'Masukan email')
@@ -189,8 +193,13 @@ class Register extends Component {
 			Alert.alert('', 'Masukan kata sandi')
 		}else{
 			const { registerPage, contentreport, subject, subjectStatus, id, ...stateData } = this.state
-			this.props.registerUser(id, stateData)
-			navigate('Login')
+			if(this.state.disabledNim === false && this.state.disabledName === false) {
+				this.props.registerManual(stateData)
+				navigate('Login')
+			}else{
+				this.props.registerUser(id, stateData)
+				navigate('Login')
+			}
 		}
 	}
 
@@ -242,8 +251,12 @@ class Register extends Component {
 					<Content>
 						<Form>
 							<Item stackedLabel>
+								<Label style={styles.label}>Nim</Label>
+								<Input disabled={this.state.disabledNim} value={this.state.nim} onChangeText={(nim) => this.setState({nim})} style={[styles.inputDisabled, {color: this.state.disabledNim ? '#757575' : '#000000'}]} />
+							</Item>
+							<Item stackedLabel>
 								<Label style={styles.label}>Fullname</Label>
-								<Input disabled value={this.state.name} onChangeText={(name) => this.setState({name})} style={styles.inputDisabled} />
+								<Input disabled={this.state.disabledName} value={this.state.name} onChangeText={(name) => this.setState({name})} style={[styles.inputDisabled, {color: this.state.disabledName ? '#757575' : '#000000'}]} />
 							</Item>
 							<Item stackedLabel>
 								<Label style={styles.label}>Email</Label>
@@ -302,7 +315,7 @@ class Register extends Component {
 							</Button>
 						</Left>
 						<Body>
-							<Title>Registrasi</Title>
+							<Title>Registration</Title>
 						</Body>
 						<Right />
 					</Header>
@@ -409,7 +422,7 @@ class Register extends Component {
 						</Button>
 					</Left>
 					<Body>
-						<Title>Registrasi</Title>
+						<Title>Registration</Title>
 					</Body>
 					<Right />
 				</Header>
@@ -427,8 +440,11 @@ class Register extends Component {
 						</Item>
 					</View>
 					<View style={styles.viewButton}>
-						<Button block style={{borderRadius: 5}} onPress={() => this.handleCheckNim()}>
+						<Button block style={{borderRadius: 5, margin: 10}} onPress={() => this.handleCheckNim()}>
 							{(this.props.loading.condition) ? ( <Spinner color='white' /> ) : ( <Text style={{fontFamily: 'SourceSansPro'}}>Check Nim</Text> )}
+						</Button>
+						<Button block style={{borderRadius: 5, margin: 10}} onPress={() => this.setState({registerPage: 'register1', disabledNim: false, disabledName: false})}>
+							<Text style={{fontFamily: 'SourceSansPro'}}>Register Manual</Text>
 						</Button>
 					</View>
 				</View>
@@ -461,6 +477,7 @@ const mapDispatchToProps = (dispatch) => {
 		fetchDataFaculties: () => dispatch(fetchFaculties()),
 		fetchDataMajors: () => dispatch(fetchMajors()),
 		fetchUserWithNim: (nim) => dispatch(fetchUserWithNim(nim)),
+		registerManual: (user) => dispatch(registerManual(user)),
 		registerUser: (id, user) => dispatch(register(id, user))
 	}
 }
@@ -483,10 +500,10 @@ const styles = StyleSheet.create({
 		borderRadius: 5
 	},
 	viewButton: {
-		margin: 10
+		margin: 10,
+		flexDirection: 'row'
 	},
 	inputDisabled: {
-		color: '#757575',
 		fontSize: 14,
 		fontFamily: 'SourceSansPro'
 	},

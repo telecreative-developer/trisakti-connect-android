@@ -39,7 +39,28 @@ export const register = (id, data) => {
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify({...data, verified: true})
+			})
+			await dispatch(registerSuccess(true))
+			await dispatch(setLoading({condition: false, process_on: 'register'}))
+		}catch(e){
+			dispatch(setFailed({condition: true, message: 'Register Failed', detailMessage: e}))
+			dispatch(setLoading({condition: false, process_on: 'register'}))
+		}
+	}
+}
+
+export const registerManual = (data) => {
+	return async (dispatch) => {
+		await dispatch(setLoading({condition: true, process_on: 'register'}))
+		try {
+			await fetch(`${url}/users`, {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({...data, verified: false})
 			})
 			await dispatch(registerSuccess(true))
 			await dispatch(setLoading({condition: false, process_on: 'register'}))

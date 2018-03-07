@@ -5,20 +5,23 @@ import { Container, Header, Title, Spinner, Picker, Text, Input, Left, Button, I
 import { connect } from 'react-redux'
 import Mailer from 'react-native-mail'
 import ThemeContainer from '../screens/ThemeContainer'
-
-type State = {
-  subjectStatus: bool,
-  subject: string,
-  contentreport: string
-}
+import { sendReport } from '../actions/users'
 
 const { width, height } = Dimensions.get('window')
 
-class Report extends Component<{}, State> {
-  state = {
-    subjectStatus: false,
-    subject: '',
-    contentreport: ''
+class Report extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      nim: '',
+      fullname: '',
+      major: 'Teknik Informatika',
+      faculty: 'Fakultas Hukum',
+      subject: 'I have a problem with my id (NIM)',
+      contentreport: '',
+      subjectStatus: false
+    }
   }
 
   componentWillMount() {
@@ -42,24 +45,53 @@ class Report extends Component<{}, State> {
 			'Are you sure to send report?',
 			[
 				{text: 'Cancel', onPress: () => {}, style: 'cancel'},
-				{text: 'Send', onPress: () => this.handleSendReportOk()},
+				{text: 'Send', onPress: () => this.handleSendReportToServer()},
 			],
 			{ cancelable: false }
 		)
 	}
 
 	async handleSendReportOk() {
-		const { subject, contentreport } = await this.state		
+		const { fullname, subject, contentreport } = await this.state		
 		await Mailer.mail({
       subject: this.state.subject,
       recipients: ['helptrisakticonnect@gmail.com'],
       ccRecipients: [],
       bccRecipients: [],
-      body: this.state.contentreport,
+      body: JSON.stringify(`
+        NIM: ${this.state.nim}
+        Name: ${this.state.fullname}
+        major: ${this.state.major}
+        faculty: ${this.state.faculty}
+
+        ${this.state.contentreport}
+      `),
       isHTML: true
     }, (error, event) => {})
-		await this.setState({subject: '', contentreport: ''})
-	}
+		await this.setState({
+      nim: '',
+      fullname: '',
+      subject: '',
+      major: '',
+      faculty: '',
+      contentreport: ''
+    })
+  }
+  
+  async handleSendReportToServer() {
+    const { nim, fullname, subject, major, faculty, contentreport } = await this.state
+    if(nim === '' &&
+    fullname === '' &&
+    subject === '' &&
+    major === '' &&
+    faculty === '' &&
+    contentreport === '') {
+      Alert.alert('Complete form', 'Please complete form value')
+    }else{
+      await this.props.sendReport({nim, fullname, subject, major, faculty, content: contentreport})
+      await this.handleSendReportOk()
+    }
+  }
 
   render() {
     return (
@@ -77,6 +109,40 @@ class Report extends Component<{}, State> {
         </Header>
         <Content>
           <Form>
+            <Item stackedLabel style={styles.viewItemContent}>
+              <Label>NIM</Label>
+              <Input
+                value={this.state.nim}
+                onChangeText={(nim) => this.setState({nim})} />
+            </Item>
+            <Item stackedLabel style={styles.viewItemContent}>
+              <Label>Full name</Label>
+              <Input
+                value={this.state.fullname}
+                onChangeText={(fullname) => this.setState({fullname})} />
+            </Item>
+            <View style={styles.viewSubject}>
+              <Text note style={styles.textSubject}>Major</Text>
+              <Picker
+                mode="dropdown"
+                selectedValue={this.state.major}
+                onValueChange={(major) => this.setState({major})}>
+                {this.props.dataMajors.map((data, index) => (
+                  <Item key={index} label={data.major} value={data.major} />
+                ))}
+              </Picker>
+            </View>
+            <View style={styles.viewSubject}>
+              <Text note style={styles.textSubject}>Faculty</Text>
+              <Picker
+                mode="dropdown"
+                selectedValue={this.state.faculty}
+                onValueChange={(faculty) => this.setState({faculty})}>
+                {this.props.dataFaculties.map((data, index) => (
+                  <Item key={index} label={data.faculty} value={data.faculty} />
+                ))}
+              </Picker>
+            </View>
             {(this.state.subjectStatus) ? (
               <Item stackedLabel style={styles.itemSubject}>
                 <Label>Subject</Label>
@@ -115,11 +181,15 @@ class Report extends Component<{}, State> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    loadingCondition: state.loading.condition
-  }
-}
+const mapStateToProps = (state) => ({
+  dataMajors: state.dataMajors,
+  dataFaculties: state.dataFaculties,
+  loadingCondition: state.loading.condition
+})
+
+const mapDispatchToProps = dispatch => ({
+  sendReport: (data) => dispatch(sendReport(data))
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -145,4 +215,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps)(ThemeContainer(Report))
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeContainer(Report))
