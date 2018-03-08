@@ -14,7 +14,7 @@ class Report extends Component {
     super()
 
     this.state = {
-      nim: '',
+      graduate: '',
       fullname: '',
       major: 'Teknik Informatika',
       faculty: 'Fakultas Hukum',
@@ -59,8 +59,8 @@ class Report extends Component {
       ccRecipients: [],
       bccRecipients: [],
       body: JSON.stringify(`
-        NIM: ${this.state.nim}
         Name: ${this.state.fullname}
+        Graduate: ${this.state.graduate}
         major: ${this.state.major}
         faculty: ${this.state.faculty}
 
@@ -69,7 +69,7 @@ class Report extends Component {
       isHTML: true
     }, (error, event) => {})
 		await this.setState({
-      nim: '',
+      graduate: '',
       fullname: '',
       subject: '',
       major: '',
@@ -79,8 +79,8 @@ class Report extends Component {
   }
   
   async handleSendReportToServer() {
-    const { nim, fullname, subject, major, faculty, contentreport } = await this.state
-    if(nim === '' &&
+    const { graduate, fullname, subject, major, faculty, contentreport } = await this.state
+    if(graduate === '' &&
     fullname === '' &&
     subject === '' &&
     major === '' &&
@@ -88,7 +88,7 @@ class Report extends Component {
     contentreport === '') {
       Alert.alert('Complete form', 'Please complete form value')
     }else{
-      await this.props.sendReport({nim, fullname, subject, major, faculty, content: contentreport})
+      await this.props.sendReport({graduate, fullname, subject, major, faculty, content: contentreport})
       await this.handleSendReportOk()
     }
   }
@@ -110,16 +110,17 @@ class Report extends Component {
         <Content>
           <Form>
             <Item stackedLabel style={styles.viewItemContent}>
-              <Label>NIM</Label>
-              <Input
-                value={this.state.nim}
-                onChangeText={(nim) => this.setState({nim})} />
-            </Item>
-            <Item stackedLabel style={styles.viewItemContent}>
               <Label>Full name</Label>
               <Input
                 value={this.state.fullname}
                 onChangeText={(fullname) => this.setState({fullname})} />
+            </Item>
+            <Item stackedLabel style={styles.viewItemContent}>
+              <Label>Graduate</Label>
+              <Input
+                keyboardType='numeric'
+                value={this.state.graduate}
+                onChangeText={(graduate) => this.setState({graduate})} />
             </Item>
             <View style={styles.viewSubject}>
               <Text note style={styles.textSubject}>Major</Text>
