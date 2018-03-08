@@ -32,7 +32,7 @@ class Register extends Component {
 			kelurahan: '',
 			provinsi: '',
 			postcode: '',
-			gender: '',
+			gender: 1,
 			birth: '',
 			birth_place: '',
 			avatar: '',
@@ -223,7 +223,7 @@ class Register extends Component {
 							<Text style={{textAlign: 'center', marginTop: 20, color: '#111', fontFamily: 'SourceSansPro', fontSize: 14}}>Welcome on Trisakti Connect. For the next step, we will send an email to your account to provide you confirmation your email address.</Text>
 						</View>
 						<Button full style={{margin: 20}} onPress={this.handleValidationRegister3}>
-							<Text style={styles.input}>Login</Text>
+							<Text style={styles.input}>Submit & Login</Text>
 						</Button>
 					</View>
 				</Container>
@@ -266,6 +266,18 @@ class Register extends Component {
 								<Label style={styles.label}>Phone</Label>
 								<Input style={styles.input} keyboardType='numeric' value={this.state.phone} onChangeText={(phone) => this.setState({phone})} />
 							</Item>
+							{this.state.disabledNim === false && this.state.disabledName === false && (
+								<View style={{margin: 15}}>
+									<Text note style={{color: '#0e0e0e', fontFamily: 'SourceSansPro', fontSize:14}}>Gender</Text>
+									<Picker
+										mode="dropdown"
+										selectedValue={this.state.gender}
+										onValueChange={(gender) => this.setState({gender})}>
+										<Item label='Male' value={1} />
+										<Item label='Female' value={2} />
+									</Picker>
+								</View>
+							)}
 							<Item stackedLabel>
 								<Label style={styles.label}>Address</Label>
 								<Input style={styles.input} value={this.state.address} onChangeText={(address) => this.setState({address})} />
