@@ -79,7 +79,7 @@ class Register extends Component {
 	}
 
 	handlePressReport() {
-		this.setState({registerPage: 'report'})
+		this.props.navigation.navigate('Report')
 	}
 
 	handleSendReport() {

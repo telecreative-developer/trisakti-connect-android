@@ -14,7 +14,7 @@ class Report extends Component {
     super()
 
     this.state = {
-      graduate: '',
+      batch: '',
       fullname: '',
       major: 'Teknik Informatika',
       faculty: 'Fakultas Hukum',
@@ -60,7 +60,7 @@ class Report extends Component {
       bccRecipients: [],
       body: JSON.stringify(`
         Name: ${this.state.fullname}
-        Graduate: ${this.state.graduate}
+        Batch: ${this.state.batch}
         major: ${this.state.major}
         faculty: ${this.state.faculty}
 
@@ -69,7 +69,7 @@ class Report extends Component {
       isHTML: true
     }, (error, event) => {})
 		await this.setState({
-      graduate: '',
+      batch: '',
       fullname: '',
       subject: '',
       major: '',
@@ -79,8 +79,8 @@ class Report extends Component {
   }
   
   async handleSendReportToServer() {
-    const { graduate, fullname, subject, major, faculty, contentreport } = await this.state
-    if(graduate === '' &&
+    const { batch, fullname, subject, major, faculty, contentreport } = await this.state
+    if(batch === '' &&
     fullname === '' &&
     subject === '' &&
     major === '' &&
@@ -88,7 +88,7 @@ class Report extends Component {
     contentreport === '') {
       Alert.alert('Complete form', 'Please complete form value')
     }else{
-      await this.props.sendReport({graduate, fullname, subject, major, faculty, content: contentreport})
+      await this.props.sendReport({batch, fullname, subject, major, faculty, content: contentreport})
       await this.handleSendReportOk()
     }
   }
@@ -116,11 +116,11 @@ class Report extends Component {
                 onChangeText={(fullname) => this.setState({fullname})} />
             </Item>
             <Item stackedLabel style={styles.viewItemContent}>
-              <Label>Graduate</Label>
+              <Label>Batch</Label>
               <Input
                 keyboardType='numeric'
-                value={this.state.graduate}
-                onChangeText={(graduate) => this.setState({graduate})} />
+                value={this.state.batch}
+                onChangeText={(batch) => this.setState({batch})} />
             </Item>
             <View style={styles.viewSubject}>
               <Text note style={styles.textSubject}>Major</Text>
