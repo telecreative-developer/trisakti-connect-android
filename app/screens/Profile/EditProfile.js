@@ -235,26 +235,22 @@ class EditProfile extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		session: state.session,
-		dataUser: state.dataUser,
-		loading: state.loading,
-		dataFaculties: state.dataFaculties,
-		dataMajors: state.dataMajors
-	}
-} 
+const mapStateToProps = (state) => ({
+	session: state.session,
+	dataUser: state.dataUser,
+	loading: state.loading,
+	dataFaculties: state.dataFaculties,
+	dataMajors: state.dataMajors
+})
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		fetchDataFaculties: () => dispatch(fetchFaculties()),
-		fetchDataMajors: () => dispatch(fetchMajors()),
-    setLinkNavigate: (navigate) => dispatch(setLinkNavigate(navigate)),
-		editProfileWithAvatar: (id, avatar, data, accessToken) => dispatch(editProfileWithAvatar(id, avatar, data, accessToken)),
-		editProfileWithoutAvatar: (id, data, accessToken) => dispatch(editProfileWithoutAvatar(id, data, accessToken)),
-		saveSession: (id, name, avatar, email, facebook, twitter, linkedin, accessToken) => dispatch(saveSession(id, name, avatar, email, facebook, twitter, linkedin, accessToken)),
-	}
-}
+const mapDispatchToProps = (dispatch) => ({
+	fetchDataFaculties: () => dispatch(fetchFaculties()),
+	fetchDataMajors: () => dispatch(fetchMajors()),
+	setLinkNavigate: (navigate) => dispatch(setLinkNavigate(navigate)),
+	editProfileWithAvatar: (id, avatar, data, accessToken) => dispatch(editProfileWithAvatar(id, avatar, data, accessToken)),
+	editProfileWithoutAvatar: (id, data, accessToken) => dispatch(editProfileWithoutAvatar(id, data, accessToken)),
+	saveSession: (id, name, avatar, email, facebook, twitter, linkedin, accessToken) => dispatch(saveSession(id, name, avatar, email, facebook, twitter, linkedin, accessToken))
+})
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,13 +1,30 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Alert, BackHandler, ToastAndroid } from 'react-native'
-import { Container, Form, Item, Input, Spinner, Button, Text } from 'native-base'
+import {
+	StyleSheet,
+	View,
+	Dimensions,
+	Image,
+	TouchableOpacity,
+	Alert,
+	BackHandler,
+	ToastAndroid
+} from 'react-native'
+import {
+	Container,
+	Form,
+	Item,
+	Input,
+	Spinner,
+	Button,
+	Text
+} from 'native-base'
 import { isEmpty, isEmail } from 'validator'
 import { connect } from 'react-redux'
 import { saveSession, savePassword } from '../actions/users'
 import ThemeContainer from './ThemeContainer'
 import logo from '../assets/images/logo.png'
 import { url } from '../server'
-import { setSession, setLinkNavigate, setDataUser } from '../actions/processor';
+import { setSession, setLinkNavigate, setDataUser } from '../actions/processor'
 
 const { height } = Dimensions.get('window')
 
@@ -39,58 +56,77 @@ class Login extends Component<{}> {
 	}
 
 	handleSetEmail(email: string) {
-		this.setState({email})
+		this.setState({ email })
 	}
 
 	handleSetPassword(password: string) {
-		this.setState({password})
+		this.setState({ password })
 	}
 
 	async validationLogin(): any {
 		const { email, password } = await this.state
-		if(await isEmpty(email)) {
+		if (await isEmpty(email)) {
 			Alert.alert('', 'Email tidak boleh kosong')
-		}else if(await !isEmail(email)){
+		} else if (await !isEmail(email)) {
 			Alert.alert('', 'Masukan email yang valid')
-		}else if(await isEmpty(password)) {
+		} else if (await isEmpty(password)) {
 			Alert.alert('', 'Password tidak boleh kosong')
-		}else{
+		} else {
 			try {
-				await this.setState({loginLoading: true})
+				await this.setState({ loginLoading: true })
 				const responseAuth = await fetch(`${url}/authentication`, {
 					method: 'POST',
 					headers: {
-						'Accept': 'application/json',
+						Accept: 'application/json',
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({strategy: 'local', email: email, password: password})
+					body: JSON.stringify({
+						strategy: 'local',
+						email: email,
+						password: password
+					})
 				})
 				const dataAuth = await responseAuth.json()
-				if(dataAuth.accessToken !== undefined) {
-					const response2 = await fetch(`${url}/users?email=${this.state.email}`, {
-						method: 'GET',
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-							'Authorization': dataAuth.accessToken
+				if (dataAuth.accessToken !== undefined) {
+					const response2 = await fetch(
+						`${url}/users?email=${this.state.email}`,
+						{
+							method: 'GET',
+							headers: {
+								Accept: 'application/json',
+								'Content-Type': 'application/json',
+								Authorization: dataAuth.accessToken
+							}
 						}
-					})
+					)
 					const dataUser = await response2.json()
-					await this.props.setSession({id: dataUser.data[0].id, accessToken: dataAuth.accessToken})
-					await this.props.saveSession(dataUser.data[0].email, dataAuth.accessToken)
-					await this.props.savePassword(password)
-					await this.props.setLinkNavigate({navigate: '', data: ''})
-					await this.props.setDataUser(dataUser.data[0])
-					await this.props.navigation.navigate('Home')
-					await this.setState({loginLoading: false})
-				}else{
-					this.setState({loginFailed: true})
-					this.setState({loginLoading: false})
+					if (dataUser.data[0].verified) {
+						await this.props.setSession({
+							id: dataUser.data[0].id,
+							accessToken: dataAuth.accessToken
+						})
+						await this.props.saveSession(
+							dataUser.data[0].email,
+							dataAuth.accessToken
+						)
+						await this.props.savePassword(password)
+						await this.props.setLinkNavigate({ navigate: '', data: '' })
+						await this.props.setDataUser(dataUser.data[0])
+						await this.props.navigation.navigate('Home')
+						await this.setState({ loginLoading: false })
+					} else {
+						this.setState({ loginFailed: true, loginLoading: false })
+						Alert.alert(
+							'',
+							'Your account in progress approve by adminYour account has not been verified, please wait for admin verification'
+						)
+					}
+				} else {
+					this.setState({ loginFailed: true, loginLoading: false })
 					Alert.alert('Login gagal', 'Email atau password salah')
 				}
-			}catch(e) {
-				this.setState({loginFailed: true})
-				this.setState({loginLoading: false})
+			} catch (e) {
+				this.setState({ loginFailed: true, loginLoading: false })
 				Alert.alert('Login gagal', 'Ada sesuatu yang salah')
 			}
 		}
@@ -106,30 +142,40 @@ class Login extends Component<{}> {
 			<Container style={styles.container}>
 				<View style={styles.viewContainer}>
 					<View style={styles.viewImage}>
-						<Image source={logo} style={{width:183, height:255 }} />
+						<Image source={logo} style={{ width: 183, height: 255 }} />
 					</View>
 					<Form style={styles.form}>
 						<Item regular style={styles.item}>
-							<Input style={{fontFamily: 'SourceSansPro'}} placeholder="Email" onChangeText={this.handleSetEmail} />
+							<Input
+								style={{ fontFamily: 'SourceSansPro' }}
+								placeholder="Email"
+								onChangeText={this.handleSetEmail}
+							/>
 						</Item>
 						<Item regular style={styles.item}>
-							<Input style={{fontFamily: 'SourceSansPro'}} placeholder="Password" secureTextEntry onChangeText={this.handleSetPassword} />
+							<Input
+								style={{ fontFamily: 'SourceSansPro' }}
+								placeholder="Password"
+								secureTextEntry
+								onChangeText={this.handleSetPassword}
+							/>
 						</Item>
 						<View style={styles.viewButton}>
 							<Button full style={styles.button} onPress={this.validationLogin}>
-								{(this.state.loginLoading) ? ( <Spinner color='white' /> ) : ( <Text style={{fontFamily: 'SourceSansPro'}}>Login</Text> )}
+								{this.state.loginLoading ? (
+									<Spinner color="white" />
+								) : (
+									<Text style={{ fontFamily: 'SourceSansPro' }}>Login</Text>
+								)}
 							</Button>
-						</View>
-						<View style={{marginTop: '10%', alignItems: 'center'}}>
-							<TouchableOpacity onPress={() => this.props.navigation.navigate('Report')}>
-								<Text style={styles.textForgotPassowrd}>Forgot something? Click here!</Text>
-							</TouchableOpacity>
 						</View>
 					</Form>
 				</View>
-				<View style={{marginTop: '10%'}}>
+				<View style={{ marginTop: '10%' }}>
 					<TouchableOpacity onPress={this.handleRegister}>
-						<Text style={styles.textForgotPassowrd}>No have account? Register!</Text>
+						<Text style={styles.textForgotPassowrd}>
+							No have account? Register!
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</Container>
@@ -137,13 +183,14 @@ class Login extends Component<{}> {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return {
-		setDataUser: (data) => dispatch(setDataUser(data)),
-		setLinkNavigate: (navigate) => dispatch(setLinkNavigate(navigate)),
-		setSession: (data) => dispatch(setSession(data)),
-		saveSession: (email, accessToken) => dispatch(saveSession(email, accessToken)),
-		savePassword: (password) => dispatch(savePassword(password))
+		setDataUser: data => dispatch(setDataUser(data)),
+		setLinkNavigate: navigate => dispatch(setLinkNavigate(navigate)),
+		setSession: data => dispatch(setSession(data)),
+		saveSession: (email, accessToken) =>
+			dispatch(saveSession(email, accessToken)),
+		savePassword: password => dispatch(savePassword(password))
 	}
 }
 
@@ -177,7 +224,7 @@ const styles = StyleSheet.create({
 		marginBottom: height / 45,
 		margin: 30,
 		borderRadius: 5,
-		backgroundColor: '#d35c72',
+		backgroundColor: '#d35c72'
 	},
 	textForgotPassowrd: {
 		color: '#FFFFFF',
