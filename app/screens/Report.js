@@ -41,7 +41,7 @@ class Report extends Component {
 			fullname: '',
 			id_faculty: 1,
 			id_major: 1,
-			nim: 0,
+			nim: '',
 			name: '',
 			email: '',
 			phone: '',
@@ -92,7 +92,7 @@ class Report extends Component {
 	}
 
 	async handleSendReportOk() {
-		const { fullname, subject, contentreport } = await this.state
+		const { fullname, subject } = await this.state
 		await Mailer.mail(
 			{
 				subject: this.state.subject,
@@ -110,10 +110,25 @@ class Report extends Component {
 			(error, event) => {}
 		)
 		await this.setState({
-			graduated: '',
-			fullname: '',
 			subject: '',
-			contentreport: ''
+			fullname: '',
+			id_faculty: 1,
+			id_major: 1,
+			nim: '',
+			name: '',
+			email: '',
+			phone: '',
+			address: '',
+			kecamatan: '',
+			kelurahan: '',
+			provinsi: '',
+			postcode: '',
+			gender: 1,
+			birth: moment(),
+			birth_place: '',
+			avatar: '',
+			password: '',
+			graduated: ''
 		})
 	}
 

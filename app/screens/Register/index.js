@@ -749,7 +749,7 @@ class Register extends Component {
 				<Footer style={{ backgroundColor: 'transparent' }}>
 					<TouchableHighlight onPress={this.handlePressReport}>
 						<Text style={{ fontFamily: 'SourceSansPro', fontSize: 16 }}>
-							Forgot nim or have problem a register? Send Report.
+							Forgot NIM or have problem a register? Send Report.
 						</Text>
 					</TouchableHighlight>
 				</Footer>
