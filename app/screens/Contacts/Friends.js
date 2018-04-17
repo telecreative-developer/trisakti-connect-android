@@ -92,7 +92,7 @@ class Friends extends Component<{}, State> {
 						{item.users[0].name}
 					</Text>
 					<View style={{ flexDirection: 'row' }}>
-						{item.users[0].facebook !== '' ? (
+						{item.users[0].facebook ? (
 							<TouchableOpacity
 								onPress={() =>
 									this.handleOpenSocialMedia(
@@ -110,7 +110,7 @@ class Friends extends Component<{}, State> {
 								</Badge>
 							</TouchableOpacity>
 						)}
-						{item.users[0].twitter !== '' ? (
+						{item.users[0].twitter ? (
 							<TouchableOpacity
 								onPress={() =>
 									this.handleOpenSocialMedia(
@@ -128,7 +128,7 @@ class Friends extends Component<{}, State> {
 								</Badge>
 							</TouchableOpacity>
 						)}
-						{item.users[0].linkedin !== '' ? (
+						{item.users[0].linkedin ? (
 							<TouchableOpacity
 								onPress={() =>
 									this.handleOpenSocialMedia(
@@ -146,6 +146,24 @@ class Friends extends Component<{}, State> {
 								</Badge>
 							</TouchableOpacity>
 						)}
+            {item.users[0].instagram ? (
+              <TouchableOpacity
+                onPress={() =>
+                  this.handleOpenSocialMedia(
+                    `https://instagram.com/${item.users[0].instagram}`
+                  )
+                }>
+                <Badge style={styles.badgeSocial}>
+                  <Icon name="instagram" size={15} color="#FFFFFF" />
+                </Badge>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity>
+                <Badge style={styles.badgeSocialNotFound}>
+                  <Icon name="instagram" size={15} color="#FFFFFF" />
+                </Badge>
+              </TouchableOpacity>
+            )}
 					</View>
 				</Body>
 			</ListItem>

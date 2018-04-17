@@ -32,6 +32,7 @@ class EditProfile extends Component {
 			facebook: '',
 			twitter: '',
 			linkedin: '',
+      instagram: '',
 			changeUri: false,
 			colorDisabled: '#C7C7C7',
 			isDateTimePickerVisible: false
@@ -60,7 +61,8 @@ class EditProfile extends Component {
 			id_faculty: this.props.dataUser.faculties[0].id_faculty,
 			facebook:  this.props.dataUser.facebook,
 			twitter:  this.props.dataUser.twitter,
-			linkedin:  this.props.dataUser.linkedin
+			linkedin:  this.props.dataUser.linkedin,
+      instagram: this.props.dataUser.instagram
 		})
   }
 
@@ -86,9 +88,9 @@ class EditProfile extends Component {
   }
   
 	async handleSaveProfile() {
-		const { id, name, avatarBase64, avatar, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin } = await this.state
-		let dataWithAvatar = await { name, avatar: avatarBase64, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin }
-		let dataWithoutAvatar = await { name, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin }
+		const { id, name, avatarBase64, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin, instagram } = await this.state
+		let dataWithAvatar = await { name, avatar: avatarBase64, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin, instagram }
+		let dataWithoutAvatar = await { name, email, address, phone, graduated, password, id_major, id_faculty, facebook, twitter, linkedin, instagram }
 		if(this.state.avatarBase64 === '') {
 			await this.props.editProfileWithoutAvatar(id, dataWithoutAvatar, this.props.session.accessToken)
 		}else{
@@ -219,6 +221,10 @@ class EditProfile extends Component {
 							<Label>Linkedin</Label>
 							<Input onChangeText={(linkedin) => this.setState({linkedin})} value={this.state.linkedin} />
 						</Item>
+            <Item stackedLabel>
+              <Label>Instagram</Label>
+              <Input onChangeText={(instagram) => this.setState({instagram})} value={this.state.instagram} />
+            </Item>
 					</Form>
 					<View style={styles.viewButtonSaveProfile}>
 						<Button block rounded onPress={() => this.handleSaveProfile()}>

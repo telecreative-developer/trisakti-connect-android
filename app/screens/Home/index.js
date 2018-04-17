@@ -8,7 +8,8 @@ import {
 	Button,
 	Icon,
 	Footer,
-	FooterTab
+	FooterTab,
+	Left
 } from 'native-base'
 import { connect } from 'react-redux'
 import News from '../News'
@@ -149,9 +150,9 @@ class Home extends Component {
 		return (
 			<Container style={styles.container}>
 				<Header hasTabs>
-					<Body>
-						<Image source={headerlogo} style={{ width: '100%', height: 20 }} />
-					</Body>
+					<Left style={{flex: 1}}>
+            <Image source={headerlogo} style={{ height: '30%', width: '100%' }} />
+					</Left>
 					<Right>
 						<Button transparent onPress={() => this.navigateToOption()}>
 							<Icon name="create" />

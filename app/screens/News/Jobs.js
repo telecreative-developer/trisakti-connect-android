@@ -40,7 +40,7 @@ class Jobs extends Component<{}, State> {
   						<Text style={styles.company}>{item.company}</Text>
   						<Text style={styles.content} ellipsizeMode='tail' numberOfLines={3}>{item.overview}</Text>
   						<View style={styles.viewFoot}>
-  							{(item.users[0].avatar.length !== '') ? (
+  							{(item.users[0].avatar) ? (
   								<Thumbnail source={{uri: item.users[0].avatar}} style={styles.avatar} />
   							) : (
   								<Thumbnail source={defaultAvatar} style={styles.avatar} />

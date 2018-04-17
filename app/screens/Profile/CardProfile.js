@@ -17,6 +17,7 @@ class CardProfile extends Component {
     super()
 
     this.state = {
+      orientation: 'POTRAIT',
       isModalCode: false
     }
   }
@@ -39,44 +40,13 @@ class CardProfile extends Component {
   render() {
     const { dataUser } = this.props
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Left>
-            <Button transparent onPress={() => this.handleBack()}>
-              <Icon name='arrow-back' />
-            </Button>
-          </Left>
-          <Body />
-        </Header>
-          {/* <View style={styles.viewQrCode}>
-            <QRCode
-              value={`${dataUser.nim}`}
-              size={150} />
-          </View> */}
-        {/* <View style={{margin: 10, alignItems: 'center'}}>
-          <View style={{alignItems: 'center'}}>
-            <Text style={styles.dataNumeric}>{dataUser.nim}</Text>
-          </View>
-        </View>
-        <View style={styles.card}>
-          <View style={styles.viewDescription}>
-            <View style={styles.label}>
-              <Text style={styles.dataName}>{dataUser.name}</Text>
-            </View>
-            <View style={styles.label}>
-              <Text style={styles.dataStyle}>{dataUser.phone}</Text>
-            </View>
-            <View style={styles.label}>
-              <Text style={styles.dataEmail}>{dataUser.email}</Text>
-            </View>
-            <View style={styles.label}>
-              <Text style={styles.dataAddress}>{dataUser.address}</Text>
-            </View>
-          </View>
-        </View> */}
-        <Modal 
+      <Container
+        style={styles.container}
+        onLayout={(e) => e.nativeEvent.layout.width > e.nativeEvent.layout.height ?
+          this.setState({orientation: 'LANDSCAPE'}) : this.setState({orientation: 'POTRAIT'})}>
+        <Modal
           isVisible = {this.state.isModalCode} style={styles.modal}
-        	onBackButtonPress={() => this.setState({ isModalCode: false })}
+          onBackButtonPress={() => this.setState({ isModalCode: false })}
           onBackdropPress={() => this.setState({ isModalCode: false })}>
           <View style={styles.modalContent}>
             <QRCode
@@ -84,16 +54,53 @@ class CardProfile extends Component {
               size={150} />
           </View>
         </Modal>
-        <View style={styles.contentView}>
-          <Text style={styles.nim}>{dataUser.nim}</Text>
-          <Text style={styles.name}>{dataUser.name}</Text>
-          <Text style={styles.phone}>{dataUser.phone}</Text>
-          <Text style={styles.email}>{dataUser.email}</Text>
-          <Text style={styles.address}>{dataUser.address}</Text>
-        </View>
-        <View style={styles.cardView}>
-          <Image source={card} style={styles.cardImage}/> 
-        </View>
+        {this.state.orientation === 'POTRAIT' && (
+          <Header>
+            <Left>
+              <Button transparent onPress={() => this.handleBack()}>
+                <Icon name='arrow-back' />
+              </Button>
+            </Left>
+            <Body />
+          </Header>
+        )}
+        {this.state.orientation === 'POTRAIT' ? (
+          <View style={{flex: 1}}>
+            <View style={{flexDirection:'column'}}>
+              <View>
+                <View style={styles.contentView}>
+                  <Text style={styles.nim}>{dataUser.nim}</Text>
+                  <Text style={styles.name}>{dataUser.name}</Text>
+                  <Text style={styles.phone}>{dataUser.phone}</Text>
+                  <Text style={styles.email}>{dataUser.email}</Text>
+                  <Text style={styles.address}>{dataUser.address}</Text>
+                </View>
+                <View style={styles.cardView}>
+                  <Image source={card} style={styles.cardImagePotrait}/>
+                </View>
+              </View>
+            </View>
+          </View>
+          ) : (
+          <View style={{flex: 1}}>
+            <View style={{flexDirection:'row'}}>
+              <View style={{flex:0.2}}></View>
+              <View style={{flex:0.6}}>
+                <View style={styles.contentView}>
+                  <Text style={styles.nim}>{dataUser.nim}</Text>
+                  <Text style={styles.name}>{dataUser.name}</Text>
+                  <Text style={styles.phone}>{dataUser.phone}</Text>
+                  <Text style={styles.email}>{dataUser.email}</Text>
+                  <Text style={styles.address}>{dataUser.address}</Text>
+                </View>
+                <View style={styles.cardView}>
+                  <Image source={card} style={styles.cardImageLandscape}/>
+                </View>
+              </View>
+              <View style={{flex:0.2}}></View>
+            </View>
+          </View>
+        )}
         <Footer style={styles.footer}>
           <Button full style={styles.button} onPress={() => this.setState({isModalCode: true})}>
             <Text>QR Code</Text>
@@ -134,10 +141,20 @@ const styles = StyleSheet.create({
     height: 45,
     width: '84%'
   },
-  cardImage: {
+  cardView:{
+    flexDirection: 'column'
+  },
+  cardImagePotrait: {
+    width: 360,
+    height: 360,
+    marginTop: 30,
+    position: 'absolute',
+    zIndex: 0
+  },
+  cardImageLandscape: {
     width: 400,
-    height: 400,
-    marginTop: 20,
+    height: 410,
+    marginTop: 30,
     position: 'absolute',
     zIndex: 0
   },
@@ -171,10 +188,6 @@ const styles = StyleSheet.create({
   dataStyle: {
     fontFamily: 'Quantico',
     fontSize: 12
-  },
-  cardView: {
-    alignItems: 'center',
-    flex: 1
   },
   footer: {
     height: height / 12,
@@ -212,8 +225,9 @@ const styles = StyleSheet.create({
   },
   contentView: {
     position: 'absolute',
+    justifyContent: 'center',
     zIndex: 999,
-    top: height / 4.4,
+    top: height / 6,
     left: width / 10
   },
   modal: {

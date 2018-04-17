@@ -36,13 +36,13 @@ class OthersNews extends Component<{}, State> {
   						<Text numberOfLines={2} style={styles.title}>{item.title}</Text>
   						<Text style={styles.content} ellipsizeMode='tail' numberOfLines={2}>{item.content}</Text>
   						<View style={styles.viewFoot}>
-  							{(item.users[0].avatar.length !== '') ? (
+  							{(item.users[0].avatar) ? (
   								<Thumbnail source={{uri: item.users[0].avatar}} style={styles.avatar} />
   							) : (
   								<Thumbnail source={defaultAvatar} style={styles.avatar} />
   							)}
   							<View>
-  								<Text note style={styles.defaultTextNote}>{ item.users[0].name}</Text>
+  								<Text note style={styles.defaultTextNote}>{item.users[0].name}</Text>
   								<Text note style={styles.defaultDate}>{moment(item.createdAt).format('lll')}</Text>
   							</View>
   						</View>
