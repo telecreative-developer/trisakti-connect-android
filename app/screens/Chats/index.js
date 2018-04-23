@@ -111,7 +111,7 @@ class Chats extends Component<{}, State> {
 				onLongPress={() => this.handleLongPress(item)}
 				style={styles.listItem}>
 				<Left>
-					{item.users[0].avatar !== '' ? (
+					{item.users ? (
 						<Thumbnail source={{ uri: item.users[0].avatar }} />
 					) : (
 						<Thumbnail source={defaultPhotoProfile} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Image, BackHandler, AsyncStorage } from 'react-native'
+import { StyleSheet, Image, BackHandler, Dimensions, AsyncStorage } from 'react-native'
 import {
 	Container,
 	Header,
@@ -18,6 +18,8 @@ import Contacts from '../Contacts'
 import Profile from '../Profile'
 import ThemeContainer from '../ThemeContainer'
 import headerlogo from '../../assets/images/logoheader.png'
+
+const { width, height } = Dimensions.get('window')
 
 class Home extends Component {
 	state = {
@@ -150,8 +152,8 @@ class Home extends Component {
 		return (
 			<Container style={styles.container}>
 				<Header hasTabs>
-					<Left style={{flex: 1}}>
-            <Image source={headerlogo} style={{ height: '30%', width: '100%' }} />
+					<Left>
+            <Image source={headerlogo} style={{ height: height / 30, width: width / 2 }} />
 					</Left>
 					<Right>
 						<Button transparent onPress={() => this.navigateToOption()}>

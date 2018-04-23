@@ -215,10 +215,10 @@ class ModeChatting extends Component<{}> {
 							<Button transparent onPress={() => this.handleBack()}>
 								<Icon name="arrow-back" />
 							</Button>
-							{params.users.avatar !== '' ? (
+							{params.users.avatar ? (
 								<Thumbnail
 									style={styles.avatar}
-									source={{ uri: params.users[0].avatar }}
+									source={{ uri: params.users.avatar }}
 								/>
 							) : (
 								<Thumbnail style={styles.avatar} source={defaultPhotoProfile} />
