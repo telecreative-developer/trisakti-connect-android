@@ -30,8 +30,16 @@ import ContactsChat from './app/screens/Chats/ContactsChat'
 import CreateNews from './app/screens/News/CreateNews'
 import CreateJob from './app/screens/News/CreateJob'
 import CreateVote from './app/screens/News/CreateVote'
+import AddShopScreen from './app/screens/Shop/AddShop'
+import ShopScreen from './app/screens/Shop/index'
+import DetailCategoryScreen from './app/screens/Shop/DetailCategory'
+import DetailItemScreen from './app/screens/Shop/DetailItem'
 
 const App = StackNavigator({
+	Shop: {screen: ShopScreen},
+	AddShop: {screen: AddShopScreen},	
+	DetailCategory: {screen: DetailCategoryScreen},
+	DetailItem: {screen: DetailItemScreen},
 	Splash: {screen: SplashScreen},
   Login: {screen: LoginScreen},
   Register: {screen: RegisterScreen},

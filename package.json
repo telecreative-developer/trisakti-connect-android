@@ -23,6 +23,7 @@
     "react": "16.0.0",
     "react-native": "0.51.0",
     "react-native-action-button": "^2.8.4",
+    "react-native-communications": "^2.2.1",
     "react-native-image-picker": "^0.26.7",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-mail": "^3.0.5",
