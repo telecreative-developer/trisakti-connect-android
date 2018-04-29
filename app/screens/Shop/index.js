@@ -32,7 +32,21 @@ class Shop extends React.Component {
           />
           <View style={styles.wrapBox}>
             <View style={styles.contentBox}>
-              {this.props.shopCategory.map((data, index) => (
+              {this.props.shopCategory.slice(0, 3).map((data, index) => (
+                <TouchableOpacity
+                  key={index}
+                  transparent
+                  onPress={() =>
+                    this.props.setLinkNavigate({ navigate: 'DetailCategory', data: data })
+                  }
+                  style={styles.contentShop}>
+                  <Image source={{ uri: data.thumbnail }} style={styles.imageIcon} />
+                  <Text style={styles.text}>{data.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <View style={styles.contentBox}>
+              {this.props.shopCategory.slice(3, 6).map((data, index) => (
                 <TouchableOpacity
                   key={index}
                   transparent
@@ -66,7 +80,7 @@ class Shop extends React.Component {
                 <View>
                   <Text style={styles.textTitle}>{item.title}</Text>
                   <Text note style={styles.text.date}>
-                    <Feather name="calendar" style={styles.iconDateLocation} />
+                    <Feather name="calendar" style={styles.iconDateLocation} />{' '}
                     {moment(item.createdAt).format('LL')}
                   </Text>
                   <Text style={styles.textPrice}>{item.price}</Text>

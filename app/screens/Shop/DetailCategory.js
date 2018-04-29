@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, BackHandler, StyleSheet, Dimensions } from 'react-native'
+import { View, Image, FlatList, BackHandler, StyleSheet, Dimensions } from 'react-native'
 import { Container, Text, Item, Input, Icon, Content, Thumbnail, Button } from 'native-base'
 import Feather from 'react-native-vector-icons/dist/Feather'
 import { connect } from 'react-redux'
@@ -10,7 +10,32 @@ import defaultAvatar from '../../assets/images/default-user.png'
 import ImageNotFound from '../../assets/images/shopping-bag.png'
 const { width, height } = Dimensions.get('window')
 
+class SearchableFlatlist extends React.Component {
+  static INCLUDES = 'includes'
+  static WORDS = 'words'
+  getFilteredResults() {
+    let { data, type, searchProperty, searchTerm } = this.props
+    return data.filter(
+      item =>
+        type && type === SearchableFlatlist.WORDS
+          ? new RegExp(`\\b${searchTerm}`, 'gi').test(item[searchProperty])
+          : new RegExp(`${searchTerm}`, 'gi').test(item[searchProperty])
+    )
+  }
+  render() {
+    return <FlatList {...this.props} data={this.getFilteredResults()} />
+  }
+}
+
 class DetailCategory extends React.Component {
+  constructor() {
+    super()
+
+    this.state = {
+      search: ''
+    }
+  }
+
   componentWillMount() {
     this.props.fetchShopWithCategory(
       this.props.navigation.state.params.shopcategory_id,
@@ -36,7 +61,11 @@ class DetailCategory extends React.Component {
           <View style={styles.viewSearch}>
             <Item style={styles.iconSearch}>
               <Icon name="search" />
-              <Input placeholder="Cari Barang" />
+              <Input
+                placeholder="Cari Barang"
+                value={this.state.search}
+                onChangeText={search => this.setState({ search })}
+              />
             </Item>
           </View>
           <View style={styles.viewAdd}>
@@ -49,39 +78,45 @@ class DetailCategory extends React.Component {
           </View>
         </View>
         {this.props.shopWithCategory.length ? (
-          this.props.shopWithCategory.map((item, index) => (
-            <Content>
-              <View style={styles.card}>
-                <View style={styles.headerCard}>
-                  {item.users[0].avatar ? (
-                    <Thumbnail small source={{ uri: item.users[0].avatar }} />
-                  ) : (
-                    <Thumbnail small source={defaultAvatar} />
-                  )}
-                  <View style={styles.nameCard}>
-                    <Text>{item.users[0].name}</Text>
+          <Content>
+            <SearchableFlatlist
+              searchProperty="name"
+              searchTerm={this.state.search}
+              data={this.props.shopWithCategory}
+              keyExtractor={({ item, index }) => index}
+              renderItem={({ item }) => (
+                <View style={styles.card}>
+                  <View style={styles.headerCard}>
+                    {item.users[0].avatar ? (
+                      <Thumbnail small source={{ uri: item.users[0].avatar }} />
+                    ) : (
+                      <Thumbnail small source={defaultAvatar} />
+                    )}
+                    <View style={styles.nameCard}>
+                      <Text>{item.users[0].name}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.viewMargin}>
+                    <Image source={{ uri: item.cover }} style={styles.image} />
+                    <View>
+                      <Text style={styles.textTitle}>{item.name}</Text>
+                      <Text note style={styles.text.date}>
+                        <Feather name="calendar" style={styles.iconDateLocation} />{' '}
+                        {moment(item.createdAt).format('LL')}
+                      </Text>
+                      <Text style={styles.textPrice}>Rp {item.price}</Text>
+                      <Text style={styles.textAddress}>{item.description}</Text>
+                      <Button
+                        style={styles.button}
+                        onPress={() => this.props.navigation.navigate('DetailItem', item)}>
+                        <Text>Beli</Text>
+                      </Button>
+                    </View>
                   </View>
                 </View>
-                <View style={styles.viewMargin}>
-                  <Image source={{ uri: item.cover }} style={styles.image} />
-                  <View>
-                    <Text style={styles.textTitle}>{item.name}</Text>
-                    <Text note style={styles.text.date}>
-                      <Feather name="calendar" style={styles.iconDateLocation} />{' '}
-                      {moment(item.createdAt).format('LL')}
-                    </Text>
-                    <Text style={styles.textPrice}>Rp {item.price}</Text>
-                    <Text style={styles.textAddress}>{item.description}</Text>
-                    <Button
-                      style={styles.button}
-                      onPress={() => this.props.navigation.navigate('DetailItem', item)}>
-                      <Text>Beli</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-            </Content>
-          ))
+              )}
+            />
+          </Content>
         ) : (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 20 }}>
             <Image source={ImageNotFound} style={{ width: 200, height: 200 }} />
