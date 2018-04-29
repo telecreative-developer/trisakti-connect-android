@@ -1,21 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, Image, BackHandler, Dimensions, AsyncStorage } from 'react-native'
-import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Footer,
-	FooterTab,
-	Left
-} from 'native-base'
+import { Container, Header, Body, Right, Button, Icon, Footer, FooterTab, Left } from 'native-base'
 import { connect } from 'react-redux'
 import News from '../News'
 import Chats from '../Chats'
 import Contacts from '../Contacts'
 import Profile from '../Profile'
+import Shop from '../Shop'
 import ThemeContainer from '../ThemeContainer'
 import headerlogo from '../../assets/images/logoheader.png'
 
@@ -50,7 +41,7 @@ class Home extends Component {
 		} else if (active === 3) {
 			return <News />
 		} else if (active === 4) {
-			return <Contacts />
+			return <Shop />
 		} else if (active === 5) {
 			return <Profile />
 		}
@@ -145,6 +136,12 @@ class Home extends Component {
 			this.props.navigation.navigate(linkNavigate.navigate)
 		} else if (linkNavigate.navigate === 'CardProfile') {
 			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
+		} else if (linkNavigate.navigate === 'DetailCategory') {
+			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
+		} else if (linkNavigate.navigate === 'DetailItem') {
+			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
+		} else if (linkNavigate.navigate === 'AddShop') {
+			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
 		} else if (linkNavigate.navigate === 'Logout') {
 			AsyncStorage.removeItem('session')
 			this.props.navigation.navigate('Login')
@@ -153,7 +150,7 @@ class Home extends Component {
 			<Container style={styles.container}>
 				<Header hasTabs>
 					<Left>
-            <Image source={headerlogo} style={{ height: height / 30, width: width / 2 }} />
+						<Image source={headerlogo} style={{ height: height / 30, width: width / 2 }} />
 					</Left>
 					<Right>
 						<Button transparent onPress={() => this.navigateToOption()}>
@@ -177,37 +174,25 @@ class Home extends Component {
 							style={styles.button}
 							active={this.state.activePageSecond}
 							onPress={() => this.handleActivePageSecond()}>
-							<Icon
-								name="chatboxes"
-								active={this.state.activePageSecond}
-								size={25}
-							/>
+							<Icon name="chatboxes" active={this.state.activePageSecond} size={25} />
 						</Button>
 						<Button
 							style={styles.button}
 							active={this.state.activePageThird}
 							onPress={() => this.handleActivePageThird()}>
-							<Icon
-								name="paper"
-								active={this.state.activePageThird}
-								size={25}
-							/>
+							<Icon name="paper" active={this.state.activePageThird} size={25} />
 						</Button>
-						{/* <Button
+						<Button
 							style={styles.button}
 							active={this.state.activePageFourth}
-							onPress={this.handleActivePageFourth}>
-							<Icon name='compass' active={this.state.activePageFourth} size={25} />
-						</Button> */}
+							onPress={() => this.handleActivePageFourth()}>
+							<Icon name="compass" active={this.state.activePageFourth} size={25} />
+						</Button>
 						<Button
 							style={styles.button}
 							active={this.state.activePageFifth}
 							onPress={() => this.handleActivePageFifth()}>
-							<Icon
-								name="person"
-								active={this.state.activePageFifth}
-								size={25}
-							/>
+							<Icon name="person" active={this.state.activePageFifth} size={25} />
 						</Button>
 					</FooterTab>
 				</Footer>
