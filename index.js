@@ -35,6 +35,7 @@ import ShopScreen from './app/screens/Shop/index'
 import DetailCategoryScreen from './app/screens/Shop/DetailCategory'
 import DetailItemScreen from './app/screens/Shop/DetailItem'
 
+<<<<<<< HEAD
 const App = StackNavigator({
 	Splash: {screen: SplashScreen},
   Login: {screen: LoginScreen},
@@ -63,6 +64,39 @@ const App = StackNavigator({
 }, {
 	headerMode: 'none'
 })
+=======
+const App = StackNavigator(
+	{
+		Splash: { screen: SplashScreen },
+		Login: { screen: LoginScreen },
+		Register: { screen: RegisterScreen },
+		Report: { screen: ReportScreen },
+		Home: { screen: HomeScreen },
+		News: { screen: NewsScreen },
+		Chats: { screen: ChatsScreen },
+		Search: { screen: SearchScreen },
+		Shop: { screen: ShopScreen },
+		AddShop: { screen: AddShopScreen },
+		DetailCategory: { screen: DetailCategoryScreen },
+		DetailItem: { screen: DetailItemScreen },
+		Options: { screen: OptionsScreen },
+		PersonProfile: { screen: PersonProfile },
+		ModeReadNews: { screen: ModeReadNews },
+		ModeReadJob: { screen: ModeReadJob },
+		ModeChatting: { screen: ModeChatting },
+		ModeReadVoting: { screen: ModeReadVoting },
+		EditProfile: { screen: EditProfile },
+		CardProfile: { screen: CardProfile },
+		ContactsChat: { screen: ContactsChat },
+		CreateNews: { screen: CreateNews },
+		CreateJob: { screen: CreateJob },
+		CreateVote: { screen: CreateVote }
+	},
+	{
+		headerMode: 'none'
+	}
+)
+>>>>>>> 409a7acdc0d51a232f101add8423a8d4e371af60
 
 const store = Reactotron.createStore(reducers, applyMiddleware(thunk))
 const persistor = persistStore(store)
@@ -75,4 +109,4 @@ const TrisaktiConnect = () => (
 	</Provider>
 )
 
-AppRegistry.registerComponent('TrisaktiConnect', () => TrisaktiConnect);
+AppRegistry.registerComponent('TrisaktiConnect', () => TrisaktiConnect)
