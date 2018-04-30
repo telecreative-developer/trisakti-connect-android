@@ -36,10 +36,6 @@ import DetailCategoryScreen from './app/screens/Shop/DetailCategory'
 import DetailItemScreen from './app/screens/Shop/DetailItem'
 
 const App = StackNavigator({
-	Shop: {screen: ShopScreen},
-	AddShop: {screen: AddShopScreen},	
-	DetailCategory: {screen: DetailCategoryScreen},
-	DetailItem: {screen: DetailItemScreen},
 	Splash: {screen: SplashScreen},
   Login: {screen: LoginScreen},
   Register: {screen: RegisterScreen},
@@ -59,7 +55,11 @@ const App = StackNavigator({
 	ContactsChat: {screen: ContactsChat},
 	CreateNews: {screen: CreateNews},
 	CreateJob: {screen: CreateJob},
-	CreateVote: {screen: CreateVote}
+	CreateVote: {screen: CreateVote},
+	Shop: {screen: ShopScreen},
+	AddShop: {screen: AddShopScreen},	
+	DetailCategory: {screen: DetailCategoryScreen},
+	DetailItem: {screen: DetailItemScreen},
 }, {
 	headerMode: 'none'
 })
