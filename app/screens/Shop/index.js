@@ -7,6 +7,7 @@ import { setLinkNavigate } from '../../actions/processor'
 import { fetchShopCategory, fetchAds, fetchShop } from '../../actions/shop'
 import defaultAvatar from '../../assets/images/default-user.png'
 import moment from 'moment'
+import noImageFound from '../../assets/images/online-shop.png'
 
 const { width, height } = Dimensions.get('window')
 
@@ -54,8 +55,9 @@ class Shop extends React.Component {
                     this.props.setLinkNavigate({ navigate: 'DetailCategory', data: data })
                   }
                   style={styles.contentShop}>
-                  <Image source={{ uri: data.thumbnail }} style={styles.imageIcon} />
-                  <Text style={styles.text}>{data.name}</Text>
+                  
+                    <Image source={{ uri: data.thumbnail }} style={styles.imageIcon} />
+                    <Text style={styles.text}>{data.name}</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -63,39 +65,54 @@ class Shop extends React.Component {
           <View style={{ margin: 10 }}>
             <Text>Barang Terpopuler</Text>
           </View>
-          {this.props.shop.map((item, index) => (
+          {this.props.shop.length ? (
+            this.props.shop.map((item, index) => (
             <View style={styles.card}>
-              <View style={styles.headerCard}>
-                {item.users[0].avatar ? (
-                  <Thumbnail small source={{ uri: item.users[0].avatar }} />
-                ) : (
-                  <Thumbnail small source={defaultAvatar} />
-                )}
-                <View style={styles.nameCard}>
-                  <Text>{item.users[0].name}</Text>
+                <View style={styles.headerCard}>
+                  {item.users[0].avatar ? (
+                    <Thumbnail small source={{ uri: item.users[0].avatar }} />
+                  ) : (
+                    <Thumbnail small source={defaultAvatar} />
+                  )}
+                  <View style={styles.nameCard}>
+                    <Text>{item.users[0].name}</Text>
+                  </View>
+                </View>
+                <View style={styles.viewMargin}>
+                  <Image source={{ uri: item.cover }} style={styles.image} />
+                  <View>
+                    <Text style={styles.textTitle}>{item.title}</Text>
+                    <Text note style={styles.text.date}>
+                      <Feather name="calendar" style={styles.iconDateLocation} />{' '}
+                      {moment(item.createdAt).format('LL')}
+                    </Text>
+                    <Text style={styles.textPrice}>{item.price}</Text>
+                    <Text style={styles.textAddress}>{item.description}</Text>
+                    <Button
+                      style={styles.button}
+                      onPress={() =>
+                        this.props.setLinkNavigate({ navigate: 'DetailItem', data: item })
+                      }>
+                      <Text>Beli</Text>
+                    </Button>
+                  </View>
                 </View>
               </View>
-              <View style={styles.viewMargin}>
-                <Image source={{ uri: item.cover }} style={styles.image} />
-                <View>
-                  <Text style={styles.textTitle}>{item.title}</Text>
-                  <Text note style={styles.text.date}>
-                    <Feather name="calendar" style={styles.iconDateLocation} />{' '}
-                    {moment(item.createdAt).format('LL')}
+            )
+          )) : (
+            <View style={{ margin: 10, backgroundColor: '#fff', padding: 20, borderWidth: 1, borderColor: '#e0e0e0'}}>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
+                <View style={{flex: 0.4}}>
+                  <Image source={noImageFound} style={{ width: 100, height: 100 }} />
+                </View>
+                <View style={{flex: 0.6}}>  
+                  <Text style={{ marginTop: 10, fontSize: 15, fontWeight: 'bold' }}>
+                    Untuk saat ini barang populer belum tersedia
                   </Text>
-                  <Text style={styles.textPrice}>{item.price}</Text>
-                  <Text style={styles.textAddress}>{item.description}</Text>
-                  <Button
-                    style={styles.button}
-                    onPress={() =>
-                      this.props.setLinkNavigate({ navigate: 'DetailItem', data: item })
-                    }>
-                    <Text>Beli</Text>
-                  </Button>
                 </View>
               </View>
             </View>
-          ))}
+          )}
           <View style={{ marginBottom: 100 }} />
         </Content>
         <Fab
@@ -142,7 +159,9 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 10,
     paddingRight: 10,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    borderWidth: 1, borderColor: '#e0e0e0',
+    borderRadius: 5,
   },
   text: {
     marginTop: 10,
