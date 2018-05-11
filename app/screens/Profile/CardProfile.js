@@ -198,28 +198,29 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   nim: {
-    fontSize: 14,
+    fontSize: 12,
     textAlign: 'right',
     fontFamily: 'Orbitron',
     color: '#fff',
   },
   name: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#fff',
     fontWeight: 'bold',
   },
   phone: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#fff',
     fontWeight: 'bold'
   },
   email: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#fff',
     fontWeight: 'bold'
   },
   address: {
-    fontSize: 14,
+    fontSize: 12,
+    width: 200,
     color: '#fff',
     fontWeight: 'bold'
   },
