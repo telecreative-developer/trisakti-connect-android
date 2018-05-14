@@ -64,7 +64,7 @@ class DetailItem extends React.Component {
               <Feather name="calendar" style={styles.iconDateLocation} />
               {moment(params.createdAt).format('LL')}
             </Text>
-            <Text style={styles.textPrice}>Rp{this.state.totalHarga}</Text>
+            <Text style={styles.textPrice}>Rp {this.state.totalHarga}</Text>
             <Text note>Masukkan jumlah yang diinginkan</Text>
             <Item style={styles.item}>
               <Button style={styles.button} onPress={() => this.minusBarang()}>

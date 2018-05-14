@@ -142,7 +142,9 @@ class Home extends Component {
 			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
 		} else if (linkNavigate.navigate === 'AddShop') {
 			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
-		} else if (linkNavigate.navigate === 'Logout') {
+		} else if (linkNavigate.navigate === 'ItemShop') {
+			this.props.navigation.navigate(linkNavigate.navigate, linkNavigate.data)
+		}else if (linkNavigate.navigate === 'Logout') {
 			AsyncStorage.removeItem('session')
 			this.props.navigation.navigate('Login')
 		}

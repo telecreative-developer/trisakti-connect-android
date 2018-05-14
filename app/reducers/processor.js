@@ -1,6 +1,7 @@
 import {
 	SESSION,
 	PROCESS_LOADING,
+	PROCESS_SUCCESS,
 	PROCESS_FAILED,
 	SET_NOTIFICATION,
 	SET_LINK_NAVIGATE,
@@ -8,6 +9,11 @@ import {
 } from '../constants'
 
 const stateLoading = {
+	condition: false,
+	proccess_on: null
+}
+
+const stateSuccess = {
 	condition: false,
 	proccess_on: null
 }
@@ -36,6 +42,15 @@ export const loading = (state = stateLoading, action) => {
 	switch(action.type) {
 	case PROCESS_LOADING:
 		return action.loading
+	default:
+		return state
+	}
+}
+
+export const success = (state = stateSuccess, action) => {
+	switch(action.type) {
+	case PROCESS_SUCCESS:
+		return action.success
 	default:
 		return state
 	}

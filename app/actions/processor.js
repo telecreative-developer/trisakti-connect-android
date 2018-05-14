@@ -1,4 +1,4 @@
-import { SESSION, PROCESS_LOADING, PROCESS_FAILED, SET_NOTIFICATION, SET_LINK_NAVIGATE, SET_DATA_USER } from '../constants'
+import { SESSION, PROCESS_SUCCESS, PROCESS_LOADING, PROCESS_FAILED, SET_NOTIFICATION, SET_LINK_NAVIGATE, SET_DATA_USER } from '../constants'
 import { url } from '../server'
 
 export const setSession = (dataSession) => {
@@ -24,6 +24,19 @@ const loading = (loading) => {
 	return {
 		type: PROCESS_LOADING,
 		loading
+	}
+}
+
+export const setSuccess = (dataSuccess) => {
+	return (dispatch) => {
+		dispatch(success(dataSuccess))
+	}
+}
+
+const success = (success) => {
+	return {
+		type: PROCESS_SUCCESS,
+		success
 	}
 }
 

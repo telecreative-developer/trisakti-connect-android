@@ -1,7 +1,7 @@
 import { persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
 
-import { session, loading, failed, linkNavigate, dataUser } from './processor'
+import { session, loading, failed, success, linkNavigate, dataUser } from './processor'
 
 import {
 	publishNewsSuccess,
@@ -51,7 +51,7 @@ import {
 	votesList
 } from './polls'
 
-import { shop, shopWithCategory, shopCategory, ads } from './shop'
+import { shop, shopWithCategory, shopCategory, ads, myShop } from './shop'
 
 const config = {
 	key: 'root',
@@ -61,6 +61,7 @@ const config = {
 const reducers = persistCombineReducers(config, {
 	session,
 	loading,
+	success,
 	failed,
 	linkNavigate,
 	dataUser,
@@ -98,6 +99,7 @@ const reducers = persistCombineReducers(config, {
 	shopCategory,
 	ads,
 	shop,
+	myShop,
 	shopWithCategory
 })
 

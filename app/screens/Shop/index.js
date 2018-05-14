@@ -12,6 +12,13 @@ import noImageFound from '../../assets/images/online-shop.png'
 const { width, height } = Dimensions.get('window')
 
 class Shop extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      active: false
+    };
+  }
+
   componentWillMount() {
     this.props.fetchAds(this.props.session.accessToken)
     this.props.fetchShop(this.props.session.accessToken)
@@ -21,7 +28,7 @@ class Shop extends React.Component {
   render() {
     return (
       <Container>
-        <Content>
+        <Content showsVerticalScrollIndicator={false}>
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -62,42 +69,37 @@ class Shop extends React.Component {
               ))}
             </View>
           </View>
+        <View style={{backgroundColor: '#f8f8f8', marginTop: 10}}>
           <View style={{ margin: 10 }}>
             <Text>Barang Terpopuler</Text>
           </View>
           {this.props.shop.length ? (
             this.props.shop.map((item, index) => (
-            <View style={styles.card}>
-                <View style={styles.headerCard}>
-                  {item.users[0].avatar ? (
-                    <Thumbnail small source={{ uri: item.users[0].avatar }} />
-                  ) : (
-                    <Thumbnail small source={defaultAvatar} />
-                  )}
-                  <View style={styles.nameCard}>
-                    <Text>{item.users[0].name}</Text>
-                  </View>
-                </View>
+              <TouchableOpacity style={styles.card} 
+                onPress={() => this.props.setLinkNavigate({ navigate: 'DetailItem', data: item })}>
                 <View style={styles.viewMargin}>
                   <Image source={{ uri: item.cover }} style={styles.image} />
                   <View>
-                    <Text style={styles.textTitle}>{item.title}</Text>
+                    <Text style={styles.textTitle}>{item.name}</Text>
                     <Text note style={styles.text.date}>
                       <Feather name="calendar" style={styles.iconDateLocation} />{' '}
                       {moment(item.createdAt).format('LL')}
                     </Text>
-                    <Text style={styles.textPrice}>{item.price}</Text>
+                    <View style={styles.headerCard}>
+                      {item.users[0].avatar ? (
+                        <Image source={{ uri: item.users[0].avatar }} style={{width: 30, height: 30, borderRadius: 15}}/>
+                      ) : (
+                        <Image source={defaultAvatar} style={{width: 30, height: 30, borderRadius: 15}} />
+                      )}
+                      <View style={styles.nameCard}>
+                        <Text>{item.users[0].name}</Text>
+                      </View>
+                    </View>
+                    <Text style={styles.textPrice}>Rp {item.price}</Text>
                     <Text style={styles.textAddress}>{item.description}</Text>
-                    <Button
-                      style={styles.button}
-                      onPress={() =>
-                        this.props.setLinkNavigate({ navigate: 'DetailItem', data: item })
-                      }>
-                      <Text>Beli</Text>
-                    </Button>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )
           )) : (
             <View style={{ margin: 10, backgroundColor: '#fff', padding: 20, borderWidth: 1, borderColor: '#e0e0e0'}}>
@@ -114,13 +116,23 @@ class Shop extends React.Component {
             </View>
           )}
           <View style={{ marginBottom: 100 }} />
+        </View>
         </Content>
         <Fab
-          style={{ backgroundColor: '#5067FF' }}
-          position="bottomRight"
-          onPress={() => this.props.setLinkNavigate({ navigate: 'AddShop' })}>
-          <Icon name="add" />
-        </Fab>
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.setState({ active: !this.state.active })}>
+            <Icon name="menu" />
+            <Button style={{ backgroundColor: '#2989d8' }} onPress={() => this.props.setLinkNavigate({ navigate: 'AddShop' })}>
+              <Icon name="add" />
+            </Button>
+            <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.setLinkNavigate({ navigate: 'ItemShop' })}>
+              <Icon name="cart" />
+            </Button>
+          </Fab>
       </Container>
     )
   }
@@ -181,7 +193,8 @@ const styles = StyleSheet.create({
   contentBox: {
     flexDirection: 'row',
     paddingLeft: 5,
-    paddingRight: 5
+    paddingRight: 5,
+    paddingBottom: 10
   },
   textTitle: {
     fontWeight: 'bold',
@@ -208,6 +221,9 @@ const styles = StyleSheet.create({
   },
   card: {
     margin: 10,
+    borderRadius: 5,
+    borderColor: '#f8f8f8',
+    borderWidth: 1,
     backgroundColor: '#fff',
     padding: 20
   },

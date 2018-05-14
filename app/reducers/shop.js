@@ -1,8 +1,17 @@
-import { FETCH_SHOP_CATEGORY, FETCH_ADS, FETCH_SHOP, FETCH_SHOP_WITH_CATEGORY } from '../constants'
+import { FETCH_SHOP_CATEGORY, FETCH_ADS, FETCH_SHOP, FETCH_SHOP_WITH_CATEGORY, FETCH_MY_SHOP } from '../constants'
 
 export const shop = (state = [], action) => {
 	switch (action.type) {
 		case FETCH_SHOP:
+			return action.payload
+		default:
+			return state
+	}
+}
+
+export const myShop = (state = [], action) => {
+	switch (action.type) {
+		case FETCH_MY_SHOP:
 			return action.payload
 		default:
 			return state

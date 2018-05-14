@@ -34,6 +34,7 @@ import AddShopScreen from './app/screens/Shop/AddShop'
 import ShopScreen from './app/screens/Shop/index'
 import DetailCategoryScreen from './app/screens/Shop/DetailCategory'
 import DetailItemScreen from './app/screens/Shop/DetailItem'
+import ItemShopScreen from './app/screens/Shop/ItemShop'
 
 const App = StackNavigator(
 	{
@@ -46,6 +47,7 @@ const App = StackNavigator(
 		Chats: { screen: ChatsScreen },
 		Search: { screen: SearchScreen },
 		Shop: { screen: ShopScreen },
+		ItemShop: { screen: ItemShopScreen },
 		AddShop: { screen: AddShopScreen },
 		DetailCategory: { screen: DetailCategoryScreen },
 		DetailItem: { screen: DetailItemScreen },

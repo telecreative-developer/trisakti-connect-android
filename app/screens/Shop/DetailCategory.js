@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, FlatList, BackHandler, StyleSheet, Dimensions } from 'react-native'
+import { View, Image, FlatList, BackHandler, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { Container, Text, Item, Input, Icon, Content, Thumbnail, Button } from 'native-base'
 import Feather from 'react-native-vector-icons/dist/Feather'
 import { connect } from 'react-redux'
@@ -85,17 +85,8 @@ class DetailCategory extends React.Component {
               data={this.props.shopWithCategory}
               keyExtractor={({ item, index }) => index}
               renderItem={({ item }) => (
-                <View style={styles.card}>
-                  <View style={styles.headerCard}>
-                    {item.users[0].avatar ? (
-                      <Thumbnail small source={{ uri: item.users[0].avatar }} />
-                    ) : (
-                      <Thumbnail small source={defaultAvatar} />
-                    )}
-                    <View style={styles.nameCard}>
-                      <Text>{item.users[0].name}</Text>
-                    </View>
-                  </View>
+                <TouchableOpacity style={styles.card} 
+                  onPress={() => this.props.setLinkNavigate({ navigate: 'DetailItem', data: item })}>
                   <View style={styles.viewMargin}>
                     <Image source={{ uri: item.cover }} style={styles.image} />
                     <View>
@@ -104,16 +95,21 @@ class DetailCategory extends React.Component {
                         <Feather name="calendar" style={styles.iconDateLocation} />{' '}
                         {moment(item.createdAt).format('LL')}
                       </Text>
+                      <View style={styles.headerCard}>
+                        {item.users[0].avatar ? (
+                          <Image source={{ uri: item.users[0].avatar }} style={{width: 30, height: 30, borderRadius: 15}}/>
+                        ) : (
+                          <Image source={defaultAvatar} style={{width: 30, height: 30, borderRadius: 15}} />
+                        )}
+                        <View style={styles.nameCard}>
+                          <Text>{item.users[0].name}</Text>
+                        </View>
+                      </View>
                       <Text style={styles.textPrice}>Rp {item.price}</Text>
                       <Text style={styles.textAddress}>{item.description}</Text>
-                      <Button
-                        style={styles.button}
-                        onPress={() => this.props.navigation.navigate('DetailItem', item)}>
-                        <Text>Beli</Text>
-                      </Button>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               )}
             />
           </Content>
@@ -143,6 +139,7 @@ const mapDispatchToProps = dispatch => ({
 
 const styles = StyleSheet.create({
   flexRow: {
+    backgroundColor: '#fff',
     flexDirection: 'row'
   },
   viewSearch: {
@@ -204,9 +201,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   card: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
+    margin: 10,
     backgroundColor: '#fff',
     padding: 20
   },

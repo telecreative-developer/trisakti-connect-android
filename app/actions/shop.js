@@ -1,6 +1,6 @@
 import { url } from '../server'
-import { FETCH_SHOP_CATEGORY, FETCH_ADS, FETCH_SHOP, FETCH_SHOP_WITH_CATEGORY } from '../constants'
-import { setLoading, setFailed } from './processor'
+import { FETCH_SHOP_CATEGORY, FETCH_ADS, FETCH_SHOP, FETCH_SHOP_WITH_CATEGORY, FETCH_MY_SHOP } from '../constants'
+import { setLoading, setFailed, setSuccess } from './processor'
 
 export const postShop = (item, accessToken) => {
 	return async dispatch => {
@@ -41,7 +41,7 @@ export const fetchShop = accessToken => {
 	return async dispatch => {
 		await dispatch(setLoading({ condition: true, process_on: 'fetch_shop' }))
 		try {
-			const response = await fetch(`${url}/shop?$limit=10&$sort[createdAt]=-1`, {
+			const response = await fetch(`${url}/shop?$limit=10&status=1&$sort[createdAt]=-1`, {
 				method: 'GET',
 				headers: {
 					Accept: 'application/json',
@@ -62,6 +62,35 @@ export const fetchShop = accessToken => {
 const fetchShopSuccess = data => {
 	return {
 		type: FETCH_SHOP,
+		payload: data
+	}
+}
+
+export const fetchMyShop = (id, accessToken) => {
+	return async dispatch => {
+		await dispatch(setLoading({ condition: true, process_on: 'fetch_shop' }))
+		try {
+			const response = await fetch(`${url}/shop?id=${id}&$sort[createdAt]=-1`, {
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					Authorization: accessToken
+				}
+			})
+			const data = await response.json()
+			await dispatch(fetchMyShopSuccess(data.data))
+			await dispatch(setLoading({ condition: false, process_on: 'fetch_shop' }))
+		} catch (e) {
+			dispatch(setFailed({ condition: true, message: 'Fetch Shop Failed', detailMessage: e }))
+			dispatch(setLoading({ condition: false, process_on: 'fetch_shop' }))
+		}
+	}
+}
+
+const fetchMyShopSuccess = data => {
+	return {
+		type: FETCH_MY_SHOP,
 		payload: data
 	}
 }
@@ -159,5 +188,28 @@ const fetchShopCategorySuccess = data => {
 	return {
 		type: FETCH_SHOP_CATEGORY,
 		payload: data
+	}
+}
+
+export const deleteMyShop = (id, accessToken) => {
+	return async dispatch => {
+		await dispatch(setLoading({ condition: true, process_on: 'delete_my_shop' }))
+		try {
+			const response = await fetch(`${url}/shop?id=${id}`, {
+				method: 'DELETE',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					Authorization: accessToken
+				}
+			})
+			await dispatch(fetchMyShop(id, accessToken))
+			await dispatch(setSuccess({condition: true, process_on: 'delete_my_shop'}))
+			await dispatch(setSuccess({condition: false, process_on: 'delete_my_shop'}))
+			await dispatch(setLoading({ condition: false, process_on: 'delete_my_shop' }))
+		} catch (e) {
+			dispatch(setFailed({ condition: true, message: 'Fetch Shop Failed', detailMessage: e }))
+			dispatch(setLoading({ condition: false, process_on: 'delete_my_shop' }))
+		}
 	}
 }
