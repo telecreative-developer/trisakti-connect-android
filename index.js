@@ -35,9 +35,17 @@ import ShopScreen from './app/screens/Shop/index'
 import DetailCategoryScreen from './app/screens/Shop/DetailCategory'
 import DetailItemScreen from './app/screens/Shop/DetailItem'
 import ItemShopScreen from './app/screens/Shop/ItemShop'
+import InvoiceShopScreen from './app/screens/Shop/InvoiceShop'
+import DetailInvoiceScreen from './app/screens/Shop/DetailInvoiceShop'
+import TokopediaShopScreen from './app/screens/Shop/TokopediaShop'
+import TokopediaCartScreen from './app/screens/Shop/TokopediaCart'
 
 const App = StackNavigator(
-	{
+	{	
+		TokopediaShop: { screen: TokopediaShopScreen },
+		TokopediaCart: { screen: TokopediaCartScreen },
+		DetailInvoiceShop: { screen: DetailInvoiceScreen },
+		InvoiceShop: { screen: InvoiceShopScreen },
 		Splash: { screen: SplashScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },

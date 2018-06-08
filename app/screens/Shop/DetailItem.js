@@ -55,7 +55,7 @@ class DetailItem extends React.Component {
   render() {
     const { params } = this.props.navigation.state
     return (
-      <Container>
+      <Container style={{backgroundColor: '#fff'}}>
         <Content showsVerticalScrollIndicator={false}>
           <Image source={{ uri: params.cover }} style={styles.image} />
           <View style={styles.viewMargin}>
@@ -64,7 +64,7 @@ class DetailItem extends React.Component {
               <Feather name="calendar" style={styles.iconDateLocation} />
               {moment(params.createdAt).format('LL')}
             </Text>
-            <Text style={styles.textPrice}>Rp {this.state.totalHarga}</Text>
+            <Text style={styles.textPrice}>Rp. {this.state.totalHarga}</Text>
             <Text note>Masukkan jumlah yang diinginkan</Text>
             <Item style={styles.item}>
               <Button style={styles.button} onPress={() => this.minusBarang()}>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   textDetail: {
-    fontSize: 12
+    fontSize: 14,
   },
   icon: {
     padding: 10,

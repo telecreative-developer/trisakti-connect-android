@@ -2,6 +2,7 @@ import React from 'react'
 import { View, FlatList, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { Fab, Container, Text, Item, Input, Icon, Content, Thumbnail, Button } from 'native-base'
 import Feather from 'react-native-vector-icons/dist/Feather'
+import Entypo from 'react-native-vector-icons/dist/Entypo'
 import { connect } from 'react-redux'
 import { setLinkNavigate } from '../../actions/processor'
 import { fetchShopCategory, fetchAds, fetchShop } from '../../actions/shop'
@@ -95,8 +96,8 @@ class Shop extends React.Component {
                         <Text>{item.users[0].name}</Text>
                       </View>
                     </View>
-                    <Text style={styles.textPrice}>Rp {item.price}</Text>
-                    <Text style={styles.textAddress}>{item.description}</Text>
+                    <Text style={styles.textPrice}>Rp.{item.price}</Text>
+                    <Text style={styles.textAddress} numberOfLines={3}>{item.description}</Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -127,10 +128,13 @@ class Shop extends React.Component {
             onPress={() => this.setState({ active: !this.state.active })}>
             <Icon name="menu" />
             <Button style={{ backgroundColor: '#2989d8' }} onPress={() => this.props.setLinkNavigate({ navigate: 'AddShop' })}>
-              <Icon name="add" />
+              <Entypo name="add-to-list" style={{fontSize: 14, color: '#fff'}}/>
             </Button>
-            <Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.setLinkNavigate({ navigate: 'ItemShop' })}>
-              <Icon name="cart" />
+            <Button style={{ backgroundColor: '#2989d8' }} onPress={() => this.props.setLinkNavigate({ navigate: 'ItemShop' })}>
+              <Entypo name="shop" style={{fontSize: 14, color: '#fff'}}/>
+            </Button>
+            <Button style={{ backgroundColor: '#2989d8' }} onPress={() => this.props.setLinkNavigate({ navigate: 'InvoiceShop' })}>
+              <Entypo name="news" style={{fontSize: 14, color: '#fff'}}/>
             </Button>
           </Fab>
       </Container>

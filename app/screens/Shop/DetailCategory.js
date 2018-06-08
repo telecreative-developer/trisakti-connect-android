@@ -56,7 +56,7 @@ class DetailCategory extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{backgroundColor: '#f8f8f8'}}>
         <View style={styles.flexRow}>
           <View style={styles.viewSearch}>
             <Item style={styles.iconSearch}>
@@ -105,8 +105,8 @@ class DetailCategory extends React.Component {
                           <Text>{item.users[0].name}</Text>
                         </View>
                       </View>
-                      <Text style={styles.textPrice}>Rp {item.price}</Text>
-                      <Text style={styles.textAddress}>{item.description}</Text>
+                      <Text style={styles.textPrice}>Rp.{item.price}</Text>
+                      <Text style={styles.textAddress} numberOfLines={3}>{item.description}</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
