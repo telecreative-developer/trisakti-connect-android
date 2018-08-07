@@ -42,10 +42,6 @@ import TokopediaCartScreen from './app/screens/Shop/TokopediaCart'
 
 const App = StackNavigator(
 	{	
-		TokopediaShop: { screen: TokopediaShopScreen },
-		TokopediaCart: { screen: TokopediaCartScreen },
-		DetailInvoiceShop: { screen: DetailInvoiceScreen },
-		InvoiceShop: { screen: InvoiceShopScreen },
 		Splash: { screen: SplashScreen },
 		Login: { screen: LoginScreen },
 		Register: { screen: RegisterScreen },
@@ -70,7 +66,11 @@ const App = StackNavigator(
 		ContactsChat: { screen: ContactsChat },
 		CreateNews: { screen: CreateNews },
 		CreateJob: { screen: CreateJob },
-		CreateVote: { screen: CreateVote }
+		CreateVote: { screen: CreateVote },
+		TokopediaShop: { screen: TokopediaShopScreen },
+		TokopediaCart: { screen: TokopediaCartScreen },
+		DetailInvoiceShop: { screen: DetailInvoiceScreen },
+		InvoiceShop: { screen: InvoiceShopScreen }
 	},
 	{
 		headerMode: 'none'
