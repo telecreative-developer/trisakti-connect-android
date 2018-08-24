@@ -54,7 +54,7 @@ class Register extends Component {
 		super()
 
 		this.state = {
-			registerPage: '',
+			registerPage: 'register1',
 			id: '',
 			id_faculty: 1,
 			id_major: 1,
@@ -77,8 +77,8 @@ class Register extends Component {
 			subjectStatus: false,
 			contentreport: '',
 			isDateTimePickerVisible: false,
-			disabledNim: true,
-			disabledName: true
+			disabledNim: false,
+			disabledName: false
 		}
 
 		this.onValueChangeFaculty = this.onValueChangeFaculty.bind(this)
@@ -364,11 +364,11 @@ class Register extends Component {
 					/>
 					<Header>
 						<Left>
-							<Button
+							{/* <Button
 								transparent
 								onPress={() => this.setState({ registerPage: '' })}>
 								<Icon name="arrow-back" />
-							</Button>
+							</Button> */}
 						</Left>
 						<Body>
 							<Title>Registration</Title>
@@ -380,7 +380,6 @@ class Register extends Component {
 							<Item stackedLabel>
 								<Label style={styles.label}>Nim</Label>
 								<Input
-									disabled={this.state.disabledNim}
 									value={this.state.nim}
 									onChangeText={nim => this.setState({ nim })}
 									style={[
@@ -392,7 +391,6 @@ class Register extends Component {
 							<Item stackedLabel>
 								<Label style={styles.label}>Fullname</Label>
 								<Input
-									disabled={this.state.disabledName}
 									value={this.state.name}
 									onChangeText={name => this.setState({ name })}
 									style={[
@@ -746,13 +744,13 @@ class Register extends Component {
 						</Button>
 					</View>
 				</View>
-				<Footer style={{ backgroundColor: 'transparent' }}>
+				{/* <Footer style={{ backgroundColor: 'transparent' }}>
 					<TouchableHighlight onPress={this.handlePressReport}>
 						<Text style={{ fontFamily: 'SourceSansPro', fontSize: 16 }}>
 							Forgot NIM or have problem a register? Send Report.
 						</Text>
 					</TouchableHighlight>
-				</Footer>
+				</Footer> */}
 			</Container>
 		)
 	}
